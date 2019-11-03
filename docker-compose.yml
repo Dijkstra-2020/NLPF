@@ -38,7 +38,7 @@ services:
     command: mongod --noauth --smallfiles
     networks:
       - webappnetwork
-# On windows docker volume create --name=data-node
-#volumes:
-#  data-node:
-#   external: true
+# Run this before : docker volume create --name=data-node
+volumes:
+  data-node:
+   external: true
