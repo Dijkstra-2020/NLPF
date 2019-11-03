@@ -4,6 +4,7 @@ FROM mhart/alpine-node:8.11.4
 WORKDIR /client
 # copy package.json into the container at /client
 COPY package*.json /client/
+ENV CHOKIDAR_USEPOLLING=true
 # install dependencies
 RUN npm install
 # Copy the current directory contents into the container at /client
