@@ -3,11 +3,14 @@ const e = React.createElement;
 
 const AppNav = () => (
     <div>
-        <nav class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Jobeet</a>
-            <a role="button" class="btn btn-outline-info navbar-btn" href="/logout">Logout</a>
+        <nav className="navbar navbar-dark bg-dark">
+            <a className="navbar-brand" href="/dashboard">Jobeet</a>
+            <div className="justify-content-end">
+                <a role="button" className="btn btn-outline-info navbar-btn" href="/profile">Profile</a>
+                <a role="button" className="btn btn-outline-info navbar-btn" href="/logout">Logout</a>
+            </div>
         </nav>
-        <img src="static/business.jpeg" class="center"/>
+        <img src="static/business.jpeg" className="center"/>
     </div>
 );
 
