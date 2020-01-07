@@ -6,6 +6,7 @@ var router = express.Router();
 let ejs = require('ejs');
 let fs = require('fs');
 const path = require('path');
+const { database, Post, Candidature, Message } = require('../database');
 var app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -41,5 +42,23 @@ router.get('/role', secured(), function (req, res, next) {
 
 router.post('/candidature', secured(), function (req, res, next) {
     const { _raw, _json, ...userProfile } = req.user;
+    var id = userProfile['user_id'];
+    return Candidature.create({
+        post_id: req.body.post_id,
+        user_id: id
+    })
 });
+
+router.get('/candidature', secured(), function (req, res, next) {
+    const { _raw, _json, ...userProfile } = req.user;
+    var id = userProfile['user_id'];
+        Candidature.findAll({
+            where: {
+                user_id: id
+            }
+        }).then(function (users) {
+            res.json(users);
+        });
+});
+
 module.exports = router;

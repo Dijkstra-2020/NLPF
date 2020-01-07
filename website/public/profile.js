@@ -12,15 +12,44 @@ const AppNav = () => (
         <img src="static/business.jpeg" class="center"/>
     </div>
 );
+const Card = ({ item }) => {
+    const { title, content } = item;
+    return (
+        <div class="card" Style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">{title || "No Title"}</h5>
+                <p class="card-text">{content || "No Content"}</p>
+            </div>
+        </div>
+    )
+};
 
 class Profile extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { familyName : "", givenName : "", email : "", role: "", image: "" } ;
+        this.state = { familyName : "", givenName : "", email : "", role: "", image: "", register: []} ;
     }
 
     componentDidMount() {
         this.getProfile();
+        this.getPosts();
+    }
+
+    getPosts = async () => {
+        await fetch('/candidature').then(res => {return res.json()})
+            .then(data => {
+                console.log(data);
+                this.setState({ register: data})
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        const response = await fetch('/posts');
+        const data = await response.json();
+        console.log(data);
+        const res = this.state.register.map(x => Object.assign(x, data.find(y => y.id === x.post_id)));
+        console.log(res);
+        this.setState({ register: res });
     }
 
     getProfile(){
@@ -43,6 +72,7 @@ class Profile extends React.Component {
             .catch(error => {
                 console.log(error);
             });
+
     };
 
     render() {
@@ -53,12 +83,25 @@ class Profile extends React.Component {
                     <div className="card-body">
                             <img src={this.state.image} alt="Avatar" className='card-image'/>
                             <h3 className="card-title">{this.state.familyName} {this.state.givenName}</h3>
+
                         <h6 className="card-text">{this.state.role}</h6>
                         <br/>
                         <h6>Email</h6>
                         <p className="card-text">{this.state.email}</p>
                     </div>
                 </div>
+                <h5 className="centrer">Tes candidatures</h5>
+                {
+                    this.state.register.length > 0 ? (
+                        this.state.register.map(item =>
+                            <Card item={item}
+                            />)
+                    ) : (
+                        <div class="card mt-2 col-sm">
+                            <div class="card-body">Inscrit à aucune offre</div>
+                        </div>
+                    )
+                }
             </div >
         );
     }

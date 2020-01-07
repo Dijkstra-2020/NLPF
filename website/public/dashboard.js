@@ -14,7 +14,7 @@ const AppNav = () => (
     </div>
 );
 
-const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel, show }) => {
+const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handleRegister, show, candidat}) => {
     const { title, content, editMode } = item;
 
     if (editMode) {
@@ -43,6 +43,7 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel, show
                     <p class="card-text">{content || "No Content"}</p>
                     <button type="button" class="btn btn-outline-danger btn-sm" onClick={handleDelete} style={{display: show}}>Supprimer</button>
                     <button type="submit" class="btn btn-info btn-sm ml-2" onClick={handleEdit} style={{display :show}}>Editer</button>
+                    <button type="submit" className="btn btn-info btn-sm ml-2" onClick={handleRegister} style={{display: candidat}}>Postuler</button>
                 </div>
             </div>
         )
@@ -52,16 +53,17 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel, show
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { data: [], show : 'none' };
+        this.state = { data: [], show : 'none', candidat: 'none'};
     }
 
     componentDidMount() {
         this.getPosts();
         fetch('/role').then(res => {return res.json()})
             .then(data => {
-                console.log(data);
                 if (data[0]['name'] === 'Entreprise')
                     this.setState({ show : 'inline-block' });
+                else
+                    this.setState({ candidat : 'inline-block' });
             })
             .catch(error => {
                 console.log(error);
@@ -110,6 +112,22 @@ class Dashboard extends React.Component {
         await this.getPosts();
     }
 
+    handleRegister = async (postId) => {
+        const body = JSON.stringify({
+            post_id: postId
+        });
+
+        const headers = {
+            'content-type': 'application/json',
+            accept: 'application/json',
+        };
+        await fetch('/candidature', {
+            method: 'POST',
+            headers,
+            body,
+        });
+    };
+
     handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
@@ -155,7 +173,9 @@ class Dashboard extends React.Component {
                                   handleEdit={this.handleEdit.bind(this, item.id)}
                                   handleDelete={this.handleDelete.bind(this, item.id)}
                                   handleCancel={this.handleCancel}
+                                  handleRegister={this.handleRegister.bind(this, item.id)}
                                   show={this.state.show}
+                                  candidat={this.state.candidat}
                             />)
                     ) : (
                         <div class="card mt-5 col-sm">

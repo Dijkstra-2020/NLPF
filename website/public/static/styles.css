@@ -47,7 +47,10 @@
     font-size: 28px;
     font-weight: bold;
 }
-
+.centrer {
+    text-align: center;
+    margin: 10px;
+}
 .close:hover,
 .close:focus {
     color: black;
