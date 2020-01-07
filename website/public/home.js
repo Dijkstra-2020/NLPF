@@ -2,29 +2,51 @@
 
 const e = React.createElement;
 
-const AppNav = () => (
-    <div>
-        <nav class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Jobeet</a>
-            <a role="button" class="btn btn-outline-info navbar-btn" href="/login">Se connecter</a>
-        </nav>
-        <img src="static/business.jpeg" class="center"/>
-    </div>
-);
-
 class Home extends React.Component {
+
     constructor(props) {
         super(props);
+        this.state = { show : 'none' };
     }
+
+    showModal = () => {
+        this.setState({ show: 'block' });
+    };
+
+    hideModal = () => {
+        this.setState({ show: 'none' });
+    };
 
     render() {
         return (
             <div>
-                <AppNav />
+                <div>
+                    <nav className="navbar navbar-dark bg-dark">
+                        <a className="navbar-brand" href="/dashboard">Jobeet</a>
+                        <div className="justify-content-end">
+                            <btn className="btn btn-outline-info navbar-btn" onClick={this.showModal}>Entreprises</btn>
+                            <a role="button" className="btn btn-outline-info navbar-btn" href="/login">Se connecter</a>
+                        </div>
+                    </nav>
+                    <img src="static/business.jpeg" className="center"/>
+                </div>
                 <div class="card mt-4" Style="width: 100%;">
                     <div class="card-body">
                         Veuillez vous connecter pour voir les dernières offres d'emplois
                     </div>
+                </div>
+                <div id="myModal" class="modal" style={{display: this.state.show}}>
+                    <div class="modal-content">
+                        <div className="modal-header">
+                            <h4>Information</h4>
+                            <span className="close" onClick={this.hideModal}>&times;</span>
+                        </div>
+                        <div className="modal-body">
+                            <p>Pour avoir le rôle Entreprise, veuillez-nous contacter afin qu'on puisse vérifier votre statut d'entreprise.</p>
+                            <p>Nous contacter par mail : John.Doe@jobeet.fr</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         );

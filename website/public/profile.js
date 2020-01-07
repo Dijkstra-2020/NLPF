@@ -16,7 +16,7 @@ const AppNav = () => (
 class Profile extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { familyName : "", givenName : "", email : "" } ;
+        this.state = { familyName : "", givenName : "", email : "", role: "" } ;
     }
 
     componentDidMount() {
@@ -34,6 +34,14 @@ class Profile extends React.Component {
             .catch(error => {
                 console.log(error);
             });
+        fetch('/role').then(res => {return res.json()})
+            .then(data => {
+                console.log(data);
+                this.setState({ role : data[0]['name'] });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     };
 
     render() {
@@ -42,7 +50,10 @@ class Profile extends React.Component {
                 <AppNav />
                 <div className="card mt-4" style={{ width: '100%' }}>
                     <div className="card-body">
-                        <h5 className="card-title">{this.state.familyName} {this.state.givenName}</h5>
+                        <h3 className="card-title">{this.state.familyName} {this.state.givenName}</h3>
+                        <h6 className="card-text">{this.state.role}</h6>
+                        <br/>
+                        <h6>Email</h6>
                         <p className="card-text">{this.state.email}</p>
                     </div>
                 </div>
