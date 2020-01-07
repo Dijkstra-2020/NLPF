@@ -6,15 +6,15 @@ const AppNav = () => (
         <nav className="navbar navbar-dark bg-dark">
             <a className="navbar-brand" href="/dashboard">Jobeet</a>
             <div className="justify-content-end">
-                <a role="button" className="btn btn-outline-info navbar-btn" href="/profile">Profile</a>
-                <a role="button" className="btn btn-outline-info navbar-btn" href="/logout">Logout</a>
+                <a role="button" className="btn btn-outline-info navbar-btn" href="/profile">Profil</a>
+                <a role="button" className="btn btn-outline-info navbar-btn" href="/logout">Se déconnecter</a>
             </div>
         </nav>
         <img src="static/business.jpeg" className="center"/>
     </div>
 );
 
-const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel }) => {
+const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel, show }) => {
     const { title, content, editMode } = item;
 
     if (editMode) {
@@ -29,8 +29,8 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel }) =>
                         <div class="input-group input-group-sm mb-3">
                             <textarea name="content" class="form-control" placeholder="Content" defaultValue={content}></textarea>
                         </div>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" onClick={handleCancel}>Cancel</button>
-                        <button type="submit" class="btn btn-info btn-sm ml-2">Save</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onClick={handleCancel}>Annuler</button>
+                        <button type="submit" class="btn btn-info btn-sm ml-2">Sauvegarder</button>
                     </form>
                 </div>
             </div>
@@ -41,8 +41,8 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel }) =>
                 <div class="card-body">
                     <h5 class="card-title">{title || "No Title"}</h5>
                     <p class="card-text">{content || "No Content"}</p>
-                    <button type="button" class="btn btn-outline-danger btn-sm" onClick={handleDelete}>Delete</button>
-                    <button type="submit" class="btn btn-info btn-sm ml-2" onClick={handleEdit}>Edit</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" onClick={handleDelete} style={{display: show}}>Supprimer</button>
+                    <button type="submit" class="btn btn-info btn-sm ml-2" onClick={handleEdit} style={{display :show}}>Editer</button>
                 </div>
             </div>
         )
@@ -52,11 +52,20 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel }) =>
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { data: [] };
+        this.state = { data: [], show : 'none' };
     }
 
     componentDidMount() {
         this.getPosts();
+        fetch('/role').then(res => {return res.json()})
+            .then(data => {
+                console.log(data);
+                if (data[0]['name'] === 'Entreprise')
+                    this.setState({ show : 'inline-block' });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     getPosts = async () => {
@@ -135,8 +144,8 @@ class Dashboard extends React.Component {
         return (
             <div>
                 <AppNav />
-                <button type="button" class="mt-4 mb-2 btn btn-primary btn-sm float-right" onClick={this.addNewPost}>
-                    Add New Post
+                <button type="button" class="mt-4 mb-2 btn btn-primary btn-sm float-right" onClick={this.addNewPost} style={{display: this.state.show}}>
+                    Ajouter une nouvelle offre
                 </button>
                 {
                     this.state.data.length > 0 ? (
@@ -146,10 +155,11 @@ class Dashboard extends React.Component {
                                   handleEdit={this.handleEdit.bind(this, item.id)}
                                   handleDelete={this.handleDelete.bind(this, item.id)}
                                   handleCancel={this.handleCancel}
+                                  show={this.state.show}
                             />)
                     ) : (
                         <div class="card mt-5 col-sm">
-                            <div class="card-body">Il n'y a aucune offres disponible</div>
+                            <div class="card-body">Aucune offre disponible</div>
                         </div>
                     )
                 }

@@ -60,3 +60,8 @@
     background-color: #343a40;
     color: white;
 }
+
+.card-image {
+    border-radius: 50%;
+    width: 10%;
+}

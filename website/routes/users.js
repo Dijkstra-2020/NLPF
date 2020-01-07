@@ -38,4 +38,8 @@ router.get('/role', secured(), function (req, res, next) {
         res.send(body);
     });
 });
+
+router.post('/candidature', secured(), function (req, res, next) {
+    const { _raw, _json, ...userProfile } = req.user;
+});
 module.exports = router;

@@ -9,7 +9,7 @@ const logger = require('morgan');
 const app = express();
 var passport = require('passport');
 var Auth0Strategy = require('passport-auth0');
-
+const { database, Post, Candidature, Message } = require('./database');
 var session = require('express-session');
 var sess = {
   secret: 'CHANGE THIS TO A RANDOM SECRET',
@@ -71,31 +71,13 @@ app.use('/', indexRouter);
 app.use('/', usersRouter);
 app.use('/', indexRouter);
 
-//Database initialize
-const Sequelize = require('sequelize');
 const epilogue = require('finale-rest');
-
-const database = new Sequelize({
-  dialect: 'sqlite',
-  storage: './db.sqlite',
-  operatorsAliases: false,
-});
-const Post = database.define('posts', {
-  title: Sequelize.STRING,
-  content: Sequelize.TEXT,
-});
-
-const Message = database.define('msg', {
-  sender: Sequelize.STRING,
-  content: Sequelize.TEXT,
-  receiver: Sequelize.STRING
-});
-
 epilogue.initialize({app: app, sequelize: database});
 const PostResource = epilogue.resource({
-  model: Post,
-  endpoints: ['/posts', '/posts/:id'],
+    model: Post,
+    endpoints: ['/posts', '/posts/:id'],
 });
+
 var port = 80;
 database.sync({ force: true }).then(() => {
     app.listen(port, () => console.log(`Listening on port ${port}!`))
