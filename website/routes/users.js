@@ -43,10 +43,13 @@ router.get('/role', secured(), function (req, res, next) {
 router.post('/candidature', secured(), function (req, res, next) {
     const { _raw, _json, ...userProfile } = req.user;
     var id = userProfile['user_id'];
-    return Candidature.create({
-        post_id: req.body.post_id,
-        user_id: id
-    })
+    console.log(req.body);
+    var c =  Candidature.create({
+        user_id: id,
+        postId: req.body.post_id
+    });
+    console.log(c);
+    return c;
 });
 
 router.get('/candidature', secured(), function (req, res, next) {

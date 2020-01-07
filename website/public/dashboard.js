@@ -53,7 +53,7 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handl
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { data: [], show : 'none', candidat: 'none'};
+        this.state = { data: [], show : 'none', candidat: 'none', register: []};
     }
 
     componentDidMount() {
@@ -74,7 +74,20 @@ class Dashboard extends React.Component {
         const response = await fetch('/posts');
         const data = await response.json();
         data.forEach(item => item.editMode = false);
-        this.setState({ data })
+        await fetch('/candidature').then(res => {return res.json()})
+            .then(data => {
+                console.log(data);
+                this.setState({ register: data})
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        for(var i=0; i < data.length;i++){
+            if (this.state.register.filter(e => e.postId === data[0].id).length > 0) {
+                data.splice(i, 1);
+            }
+        }
+        this.setState({data});
     }
 
     addNewPost = () => {
@@ -116,7 +129,7 @@ class Dashboard extends React.Component {
         const body = JSON.stringify({
             post_id: postId
         });
-
+        console.log(body);
         const headers = {
             'content-type': 'application/json',
             accept: 'application/json',
@@ -126,6 +139,7 @@ class Dashboard extends React.Component {
             headers,
             body,
         });
+        await this.getPosts();
     };
 
     handleSubmit = async (event) => {

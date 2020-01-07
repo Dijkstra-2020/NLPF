@@ -47,7 +47,7 @@ class Profile extends React.Component {
         const response = await fetch('/posts');
         const data = await response.json();
         console.log(data);
-        const res = this.state.register.map(x => Object.assign(x, data.find(y => y.id === x.post_id)));
+        const res = this.state.register.map(x => Object.assign(x, data.find(y => y.id === x.postId)));
         console.log(res);
         this.setState({ register: res });
     }
