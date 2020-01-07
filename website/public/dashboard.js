@@ -2,10 +2,13 @@
 const e = React.createElement;
 
 const AppNav = () => (
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">NLPF</a>
-        <a role="button" class="btn btn-outline-info navbar-btn" href="/logout">Logout</a>
-    </nav>
+    <div>
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Jobeet</a>
+            <a role="button" class="btn btn-outline-info navbar-btn" href="/logout">Logout</a>
+        </nav>
+        <img src="static/business.jpeg" class="center"/>
+    </div>
 );
 
 const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel }) => {
@@ -43,7 +46,7 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel }) =>
     }
 }
 
-class Admin extends React.Component {
+class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = { data: [] };
@@ -143,7 +146,7 @@ class Admin extends React.Component {
                             />)
                     ) : (
                         <div class="card mt-5 col-sm">
-                            <div class="card-body">You don't have any posts. Use the "Add New Post" button to add some new posts!</div>
+                            <div class="card-body">Il n'y a aucune offres disponible</div>
                         </div>
                     )
                 }
@@ -153,4 +156,4 @@ class Admin extends React.Component {
 }
 
 const domContainer = document.querySelector('#root');
-ReactDOM.render(e(Admin), domContainer);
+ReactDOM.render(e(Dashboard), domContainer);

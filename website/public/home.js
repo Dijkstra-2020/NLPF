@@ -3,10 +3,13 @@
 const e = React.createElement;
 
 const AppNav = () => (
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">NLPF</a>
-        <a role="button" class="btn btn-outline-info navbar-btn" href="/login">Login</a>
-    </nav>
+    <div>
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Jobeet</a>
+            <a role="button" class="btn btn-outline-info navbar-btn" href="/login">Se connecter</a>
+        </nav>
+        <img src="static/business.jpeg" class="center"/>
+    </div>
 );
 
 class Home extends React.Component {
@@ -20,7 +23,7 @@ class Home extends React.Component {
                 <AppNav />
                 <div class="card mt-4" Style="width: 100%;">
                     <div class="card-body">
-                        Please login to see your posts.
+                        Veuillez vous connecter pour voir les dernières offres d'emplois
                     </div>
                 </div>
             </div>

@@ -6,29 +6,48 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const session = require('express-session');
-const { ExpressOIDC } = require('@okta/oidc-middleware');
 const app = express();
-app.use(session({
-  secret: process.env.RANDOM_SECRET_WORD,
-  resave: true,
-  saveUninitialized: false
-}));
+var passport = require('passport');
+var Auth0Strategy = require('passport-auth0');
 
-const oidc = new ExpressOIDC({
-  issuer: `${process.env.OKTA_ORG_URL}/oauth2/default`,
-  client_id: process.env.OKTA_CLIENT_ID,
-  client_secret: process.env.OKTA_CLIENT_SECRET,
-  redirect_uri: process.env.REDIRECT_URL,
-  scope: 'openid profile',
-  routes: {
-    callback: {
-      path: '/authorization-code/callback',
-      defaultRedirect: '/admin'
+var session = require('express-session');
+var sess = {
+  secret: 'CHANGE THIS TO A RANDOM SECRET',
+  cookie: {},
+  resave: false,
+  saveUninitialized: true
+};
+if (app.get('env') === 'production') {
+  // Use secure cookies in production (requires SSL/TLS)
+  sess.cookie.secure = true;
+
+  // Uncomment the line below if your application is behind a proxy (like on Heroku)
+  // or if you're encountering the error message:
+  // "Unable to verify authorization request state"
+  // app.set('trust proxy', 1);
+}
+
+app.use(session(sess));
+
+var strategy = new Auth0Strategy(
+    {
+      domain: process.env.AUTH0_DOMAIN,
+      clientID: process.env.AUTH0_CLIENT_ID,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      callbackURL: process.env.AUTH0_CALLBACK_URL
+    },
+    function (accessToken, refreshToken, extraParams, profile, done) {
+      // accessToken is the token to call Auth0 API (not needed in the most cases)
+      // extraParams.id_token has the JSON Web Token
+      // profile has all the information from the user
+      return done(null, profile);
     }
-  }
-});
-app.use(oidc.router);
+);
+
+passport.use(strategy);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,9 +59,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-const indexRouter = require('./routes/index');
+var userInViews = require('./lib/middleware/userInViews');
+var authRouter = require('./routes/auth');
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+
+// ..
+app.use(userInViews());
+app.use('/', authRouter);
+app.use('/', indexRouter);
+app.use('/', usersRouter);
 app.use('/', indexRouter);
 
+//Database initialize
 const Sequelize = require('sequelize');
 const epilogue = require('finale-rest');
 
@@ -55,6 +84,13 @@ const Post = database.define('posts', {
   title: Sequelize.STRING,
   content: Sequelize.TEXT,
 });
+
+const Message = database.define('msg', {
+  sender: Sequelize.STRING,
+  content: Sequelize.TEXT,
+  receiver: Sequelize.STRING
+});
+
 epilogue.initialize({app: app, sequelize: database});
 const PostResource = epilogue.resource({
   model: Post,
@@ -62,15 +98,7 @@ const PostResource = epilogue.resource({
 });
 var port = 80;
 database.sync({ force: true }).then(() => {
-  oidc.on('ready', () => {
     app.listen(port, () => console.log(`Listening on port ${port}!`))
-  });
-});
-
-
-oidc.on('error', err => {
-  // An error occurred while setting up OIDC
-  console.log("oidc error: ", err);
 });
 
 app.use(function(req, res, next) {
