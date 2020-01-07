@@ -1,5 +1,4 @@
 'use strict';
-
 const e = React.createElement;
 
 class Home extends React.Component {
@@ -22,7 +21,7 @@ class Home extends React.Component {
             <div>
                 <div>
                     <nav className="navbar navbar-dark bg-dark">
-                        <a className="navbar-brand" href="/dashboard">Jobeet</a>
+                        <a className="navbar-brand" href="/">Jobeet</a>
                         <div className="justify-content-end">
                             <btn className="btn btn-outline-info navbar-btn" onClick={this.showModal}>Entreprises</btn>
                             <a role="button" className="btn btn-outline-info navbar-btn" href="/login">Se connecter</a>
@@ -46,7 +45,6 @@ class Home extends React.Component {
                             <p>Nous contacter par mail : John.Doe@jobeet.fr</p>
                         </div>
                     </div>
-
                 </div>
             </div>
         );
