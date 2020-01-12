@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var passport = require('passport');
 var Auth0Strategy = require('passport-auth0');
 const { database, Post, Candidature, Message } = require('./database');
@@ -17,14 +19,10 @@ var sess = {
   resave: false,
   saveUninitialized: true
 };
-if (app.get('env') === 'production') {
-  // Use secure cookies in production (requires SSL/TLS)
-  sess.cookie.secure = true;
 
-  // Uncomment the line below if your application is behind a proxy (like on Heroku)
-  // or if you're encountering the error message:
-  // "Unable to verify authorization request state"
-  // app.set('trust proxy', 1);
+if (app.get('env') === 'production') {
+    // Use secure cookies in production (requires SSL/TLS)
+    sess.cookie.secure = true;
 }
 
 app.use(session(sess));
@@ -59,28 +57,43 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Middleware
 var userInViews = require('./lib/middleware/userInViews');
+app.use(userInViews());
+
+
+// Route
 var authRouter = require('./routes/auth');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
-// ..
-app.use(userInViews());
+var msgRouter = require('./routes/messagerie');
 app.use('/', authRouter);
 app.use('/', indexRouter);
 app.use('/', usersRouter);
-app.use('/', indexRouter);
+app.use('/', msgRouter);
 
 const epilogue = require('finale-rest');
 epilogue.initialize({app: app, sequelize: database});
-const PostResource = epilogue.resource({
+epilogue.resource({
     model: Post,
     endpoints: ['/posts', '/posts/:id'],
 });
 
+epilogue.resource({
+    model: Message,
+    endpoints: ['/msg', '/msg/:id'],
+});
+
+io.on('connection', () =>{
+    console.log('a user is connected')
+});
+
 var port = 80;
 database.sync({ force: true }).then(() => {
-    app.listen(port, () => console.log(`Listening on port ${port}!`))
+    var server = http.listen(port, () => {
+        console.log('server is running on port', server.address().port);
+    });
 });
 
 app.use(function(req, res, next) {

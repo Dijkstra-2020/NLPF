@@ -3,8 +3,6 @@
 var express = require('express');
 var secured = require('../lib/middleware/secured');
 var router = express.Router();
-let ejs = require('ejs');
-let fs = require('fs');
 const path = require('path');
 const { database, Post, Candidature, Message } = require('../database');
 var app = express();
@@ -55,13 +53,13 @@ router.post('/candidature', secured(), function (req, res, next) {
 router.get('/candidature', secured(), function (req, res, next) {
     const { _raw, _json, ...userProfile } = req.user;
     var id = userProfile['user_id'];
-        Candidature.findAll({
-            where: {
-                user_id: id
-            }
-        }).then(function (users) {
-            res.json(users);
-        });
+    Candidature.findAll({
+        where: {
+            user_id: id
+        }
+    }).then(function (users) {
+        res.json(users);
+    });
 });
 
 module.exports = router;
