@@ -85,8 +85,12 @@ epilogue.resource({
     endpoints: ['/msg', '/msg/:id'],
 });
 
-io.on('connection', () =>{
-    console.log('a user is connected')
+io.sockets.on('connection', (socket) =>{
+    console.log('a user is connected');
+    socket.on('message', function() {
+        console.log("RECOIT MESSAGE");
+        socket.broadcast.emit('msg', "call");
+    });
 });
 
 var port = 80;

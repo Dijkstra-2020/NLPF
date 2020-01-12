@@ -24,15 +24,20 @@ const Card = ({item}) => {
     )
 };
 
+var socket = io();
 class Message extends React.Component {
     constructor(props) {
         super(props);
         this.state = {message: [], sender_id: ""};
     }
 
+
     componentDidMount() {
         this.getProfile();
         this.getMsg();
+        socket.on('msg', () => {
+            this.getMsg();
+        })
     }
 
     getProfile() {
@@ -67,6 +72,7 @@ class Message extends React.Component {
             headers,
             body,
         });
+        socket.emit('message',body);
         await this.getMsg();
     }
 
@@ -99,6 +105,5 @@ class Message extends React.Component {
         );
     }
 }
-
 const domContainer = document.querySelector('#root');
 ReactDOM.render(e(Message), domContainer);
