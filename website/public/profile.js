@@ -46,28 +46,27 @@ class Profile extends React.Component {
             });
         const response = await fetch('/posts');
         const data = await response.json();
-        console.log(data);
         const res = this.state.register.map(x => Object.assign(x, data.find(y => y.id === x.postId)));
-        console.log(res);
         this.setState({ register: res });
     }
 
     getProfile(){
-        fetch('/user').then(res => {return res.json()})
+        fetch('/profiles').then(res => {return res.json()})
             .then(data => {
                 console.log(data);
-                this.setState({ familyName : data['name']['familyName'] });
-                this.setState({ givenName : data['name']['givenName'] });
-                this.setState({ email : data['emails'][0]['value'] });
-                this.setState({ image : data['picture'] });
+                this.setState({ familyName : data['familyName'] });
+                this.setState({ givenName : data['givenName'] });
+                this.setState({ email : data['email'] });
+                this.setState({ image : data['image'] });
+                this.setState({ description : data['description'] });
+                this.setState({ skill : data['skill'] });
             })
             .catch(error => {
                 console.log(error);
             });
         fetch('/role').then(res => {return res.json()})
             .then(data => {
-                console.log(data);
-                this.setState({ role : data[0]['name'] });
+                this.setState({ role : data['familyName'] });
             })
             .catch(error => {
                 console.log(error);
@@ -88,6 +87,10 @@ class Profile extends React.Component {
                         <br/>
                         <h6>Email</h6>
                         <p className="card-text">{this.state.email}</p>
+                        <h6>Description</h6>
+                        <p className="card-text">{this.state.description}</p>
+                        <h6>Compétences</h6>
+                        <p className="card-text">{this.state.skill}</p>
                     </div>
                 </div>
                 {

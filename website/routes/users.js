@@ -4,13 +4,25 @@ var express = require('express');
 var secured = require('../lib/middleware/secured');
 var router = express.Router();
 const path = require('path');
-const { database, Post, Candidature, Message } = require('../database');
+const { database, Post, Candidature, Message, Profil } = require('../database');
 var app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 /* GET user profile. */
 router.get('/profile', secured(), function (req, res, next) {
     res.sendFile(path.join(__dirname, '../public/profile.html'));
+});
+
+router.get('/profiles', secured(), function (req, res, next) {
+    const { _raw, _json, ...userProfile } = req.user;
+    var id = userProfile['user_id'];
+    Profil.findOne({
+        where: {
+            auth_id: id
+        }
+    }).then(function (profil) {
+        res.json(profil);
+    });
 });
 
 /* GET user profile JSON. */

@@ -6,6 +6,7 @@ const database = new Sequelize({
     storage: './db.sqlite',
     operatorsAliases: false,
 });
+
 const Post = database.define('posts', {
     title: Sequelize.STRING,
     content: Sequelize.TEXT
@@ -22,4 +23,14 @@ const Message = database.define('msg', {
     receiver_id: Sequelize.STRING
 });
 
-module.exports = { database, Post, Candidature, Message };
+const Profil = database.define('profil', {
+    auth_id: Sequelize.STRING,
+    image: Sequelize.STRING,
+    familyName: Sequelize.STRING,
+    givenName: Sequelize.STRING,
+    email: Sequelize.STRING,
+    description: Sequelize.STRING,
+    skill: Sequelize.STRING
+});
+
+module.exports = { database, Post, Candidature, Message, Profil };
