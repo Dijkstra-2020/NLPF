@@ -13,6 +13,11 @@ router.get('/profile', secured(), function (req, res, next) {
     res.sendFile(path.join(__dirname, '../public/profile.html'));
 });
 
+/* GET user profile update. */
+router.get('/update-profile', secured(), function (req, res, next) {
+    res.sendFile(path.join(__dirname, '../public/update-profile.html'));
+});
+
 /* GET user profile JSON. */
 router.get('/user', secured(), function (req, res, next) {
     const { _raw, _json, ...userProfile } = req.user;

@@ -5,11 +5,11 @@ const AppNav = () => (
         <nav class="navbar navbar-dark bg-dark">
             <a class="navbar-brand" href="/dashboard">Jobeet</a>
             <div className="justify-content-end">
-                    <a role="button" className="btn btn-outline-info navbar-btn" href="/profile">Profil</a>
-                    <a role="button" class="btn btn-outline-info navbar-btn" href="/logout">Se déconnecter</a>
+                <a role="button" className="btn btn-outline-info navbar-btn" href="/profile">Profil</a>
+                <a role="button" class="btn btn-outline-info navbar-btn" href="/logout">Se déconnecter</a>
             </div>
         </nav>
-        <img src="static/business.jpeg" class="center"/>
+        <img src="static/business.jpeg" class="center" />
     </div>
 );
 const Card = ({ item }) => {
@@ -27,7 +27,7 @@ const Card = ({ item }) => {
 class Profile extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { familyName : "", givenName : "", email : "", role: "", image: "", register: []} ;
+        this.state = { familyName: "", givenName: "", email: "", role: "", image: "", register: [] };
     }
 
     componentDidMount() {
@@ -36,10 +36,10 @@ class Profile extends React.Component {
     }
 
     getPosts = async () => {
-        await fetch('/candidature').then(res => {return res.json()})
+        await fetch('/candidature').then(res => { return res.json() })
             .then(data => {
                 console.log(data);
-                this.setState({ register: data})
+                this.setState({ register: data })
             })
             .catch(error => {
                 console.log(error);
@@ -52,22 +52,22 @@ class Profile extends React.Component {
         this.setState({ register: res });
     }
 
-    getProfile(){
-        fetch('/user').then(res => {return res.json()})
+    getProfile() {
+        fetch('/user').then(res => { return res.json() })
             .then(data => {
                 console.log(data);
-                this.setState({ familyName : data['name']['familyName'] });
-                this.setState({ givenName : data['name']['givenName'] });
-                this.setState({ email : data['emails'][0]['value'] });
-                this.setState({ image : data['picture'] });
+                this.setState({ familyName: data['name']['familyName'] });
+                this.setState({ givenName: data['name']['givenName'] });
+                this.setState({ email: data['emails'][0]['value'] });
+                this.setState({ image: data['picture'] });
             })
             .catch(error => {
                 console.log(error);
             });
-        fetch('/role').then(res => {return res.json()})
+        fetch('/role').then(res => { return res.json() })
             .then(data => {
                 console.log(data);
-                this.setState({ role : data[0]['name'] });
+                this.setState({ role: data[0]['name'] });
             })
             .catch(error => {
                 console.log(error);
@@ -81,19 +81,27 @@ class Profile extends React.Component {
                 <AppNav />
                 <div className="card mt-4" style={{ width: '100%' }}>
                     <div className="card-body">
-                            <img src={this.state.image} alt="Avatar" className='card-image'/>
-                            <h3 className="card-title">{this.state.familyName} {this.state.givenName}</h3>
+                        <img src={this.state.image} alt="Avatar" className='card-image' />
+                        <h3 className="card-title">{this.state.familyName} {this.state.givenName}</h3>
 
                         <h6 className="card-text">{this.state.role}</h6>
-                        <br/>
+                        <br />
                         <h6>Email</h6>
                         <p className="card-text">{this.state.email}</p>
+                    </div>
+                    <div>
+                        <button>
+                            <a role="button" href="/update-profile">
+                                Modifier profil
+                            </a>
+                        </button>
+
                     </div>
                 </div>
                 {
                     this.state.role === 'Candidat' ? (
                         <div>
-                    <h5 className="centrer">Tes candidatures</h5>
+                            <h5 className="centrer">Tes candidatures</h5>
                         </div>) : (<div></div>)
                 }
                 {
@@ -103,10 +111,10 @@ class Profile extends React.Component {
                                 <Card item={item}
                                 />)
                         ) : (
-                            <div class="card mt-2 col-sm">
-                                <div class="card-body">Inscrit à aucune offre</div>
-                            </div>
-                        )
+                                <div class="card mt-2 col-sm">
+                                    <div class="card-body">Inscrit à aucune offre</div>
+                                </div>
+                            )
                     ) : (<div></div>)
                 }
             </div >
