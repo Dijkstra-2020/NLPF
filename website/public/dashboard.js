@@ -7,6 +7,7 @@ const AppNav = () => (
             <a className="navbar-brand" href="/dashboard">Jobeet</a>
             <div className="justify-content-end">
                 <a role="button" className="btn btn-outline-info navbar-btn" href="/profile">Profil</a>
+                <a role="button" className="btn btn-outline-info navbar-btn" href="/messagerie">Messagerie</a>
                 <a role="button" className="btn btn-outline-info navbar-btn" href="/logout">Se déconnecter</a>
             </div>
         </nav>

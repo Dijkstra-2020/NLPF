@@ -17,6 +17,7 @@ const Candidature = database.define('candidature', {
 Candidature.belongsTo(Post, { onDelete: 'cascade' });
 
 const Message = database.define('msg', {
+    username: Sequelize.STRING,
     sender_id: Sequelize.STRING,
     content: Sequelize.TEXT,
     receiver_id: Sequelize.STRING
