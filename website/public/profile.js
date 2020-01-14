@@ -158,12 +158,6 @@ class Profile extends React.Component {
                                             </div>
                                         </div>
                                         <div className="form-group row">
-                                            <label className="col-lg-3 col-form-label form-control-label">Mail</label>
-                                            <div className="col-lg-9">
-                                                <input className="form-control" type="text" value={this.state.email} onChange={e => this.setState({email: e.target.value})}/>
-                                            </div>
-                                        </div>
-                                        <div className="form-group row">
                                             <label className="col-lg-3 col-form-label form-control-label">Description</label>
                                             <div className="col-lg-9">
                                                 <textarea className="list-card-composer-textarea js-card-title" value={this.state.description} onChange={e => this.setState({description: e.target.value})}/>
@@ -196,7 +190,6 @@ class Profile extends React.Component {
             givenName: this.state.givenName,
             familyName: this.state.familyName,
             description: this.state.description,
-            email: this.state.email,
         });
         console.log(body);
         const headers = {
