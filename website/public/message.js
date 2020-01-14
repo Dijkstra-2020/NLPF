@@ -67,16 +67,12 @@ class Message extends React.Component {
         const data2 = await response2.json();
         data = data.concat(data2);
         data = data.sort(function(a,b){
-            // Turn your strings into dates, and then subtract them
-            // to get a value that is either negative, positive, or zero.
             return new Date(a.createdAt) - new Date(b.createdAt);
         });
-        console.log(data);
         this.setState({message: data});
     }
 
     handleInputChange = async (receiver) => {
-        console.log(receiver.value);
         await this.setState({ receiver_id : receiver.value });
         await this.getMsg();
     };
