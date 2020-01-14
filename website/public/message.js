@@ -61,9 +61,9 @@ class Message extends React.Component {
     }
 
     getMsg = async () => {
-        const response = await fetch('/msg' + '?receiver_id=' + this.state.receiver_id + '&sender_id' + this.state.sender_id );
+        const response = await fetch('/msg' + '?receiver_id=' + this.state.receiver_id + '&sender_id=' + this.state.sender_id );
         var data = await response.json();
-        const response2 = await fetch('/msg' + '?sender_id=' + this.state.receiver_id + '&receiver_id' + this.state.sender_id );
+        const response2 = await fetch('/msg' + '?sender_id=' + this.state.receiver_id + '&receiver_id=' + this.state.sender_id );
         const data2 = await response2.json();
         data = data.concat(data2);
         data = data.sort(function(a,b){
