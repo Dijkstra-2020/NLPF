@@ -79,19 +79,19 @@ router.post('/updateprofil', secured(), function (req, res, next) {
     Profil.update
     (
         {
-            auth_id: req.auth_id
+            "familyName": req.body.familyName,
+            "givenName": req.body.givenName,
+            "email": req.body.email,
+            "description": req.body.description
         },
         {
-            $set :
-            {
-                "familyName": req.familyName,
-                "givenName": req.giveName,
-                "email": req.email,
-                "description": req.description
-            }
-        }
-    );
-    return req.body;
+            where: {auth_id: req.body.auth_id}
+        },
+
+    ).then((result) => {
+        console.log(result);
+    });
+    res.sendStatus(200);
 });
 
 module.exports = router;

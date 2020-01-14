@@ -70,7 +70,6 @@ router.get('/callback', function (req, res, next) {
                 skill: "Pas encore renseigné"
             });
             console.log(c);
-            let mydb =
             res.redirect(returnTo || '/dashboard');
         });
     })(req, res, next);

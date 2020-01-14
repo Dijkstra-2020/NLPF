@@ -12,6 +12,7 @@ const AppNav = () => (
         <img src="static/business.jpeg" class="center"/>
     </div>
 );
+
 const Card = ({ item }) => {
     const { title, content } = item;
     return (
@@ -67,7 +68,8 @@ class Profile extends React.Component {
             });
         fetch('/role').then(res => {return res.json()})
             .then(data => {
-                this.setState({ role : data['familyName'] });
+                console.log(data);
+                this.setState({ role : data[0].name });
             })
             .catch(error => {
                 console.log(error);
@@ -105,17 +107,17 @@ class Profile extends React.Component {
 			                    <h5 class="mb-3">{this.state.familyName} {this.state.givenName}</h5>
 			                    <div class="row">
 			                        <div class="col-md-6">
-			                            <h6>A propos</h6>
+			                            <h6>À propos</h6>
 			                            <p>
-			                                Web Designer, UI/UX Engineer
+			                                {this.state.role}
 			                            </p>
-			                            <h6>Desciption</h6>
+			                            <h6>Description</h6>
 			                            <p>
 			                                {this.state.description}
 			                            </p>
 			                        </div>
 			                        <div class="col-md-6">
-			                            <h6>Compétence</h6>
+			                            <h6>Compétences</h6>
 			                            <a href="#" class="badge badge-dark badge-pill">html5</a>
 			                            <a href="#" class="badge badge-dark badge-pill">react</a>
 			                            <a href="#" class="badge badge-dark badge-pill">codeply</a>
@@ -191,12 +193,12 @@ class Profile extends React.Component {
 
         const body = JSON.stringify({
             auth_id: this.state.auth_id,
-            giveName: this.state.givenName,
+            givenName: this.state.givenName,
             familyName: this.state.familyName,
             description: this.state.description,
             email: this.state.email,
         });
-
+        console.log(body);
         const headers = {
             'content-type': 'application/json',
             accept: 'application/json',
