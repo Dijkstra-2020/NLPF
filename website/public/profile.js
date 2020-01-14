@@ -73,47 +73,121 @@ class Profile extends React.Component {
             });
 
     };
-
+/*
+    editprofil = (name, name2) => {
+        return (
+            <div className="form-group row">
+                <label className="col-lg-3 col-form-label form-control-label">{name} </label>
+                <div className="col-lg-9">
+                    <input className="form-control" type="text" value={name2} onChange={e => this.setState({name2: e.target.value})}/>
+                </div>
+            </div>
+        )
+    };
+ */
     render() {
         return (
             <div>
                 <AppNav />
-                <div className="card mt-4" style={{ width: '100%' }}>
-                    <div className="card-body">
-                            <img src={this.state.image} alt="Avatar" className='card-image'/>
-                            <h3 className="card-title">{this.state.familyName} {this.state.givenName}</h3>
+                <div className="row my-2">
+                    <div className="col-lg-8 order-lg-2">
+                        <ul className="nav nav-tabs">
+                            <li className="nav-item">
+                                <a href="" data-target="#profile" data-toggle="tab" className="nav-link active">Profile</a>
+                            </li>
+                            <li className="nav-item">
+                                <a href="" data-target="#edit" data-toggle="tab" className="nav-link">Edit</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content py-4">
+               		   		 <div class="tab-pane active" id="profile">
+			                    <h5 class="mb-3">{this.state.familyName} {this.state.givenName}</h5>
+			                    <div class="row">
+			                        <div class="col-md-6">
+			                            <h6>A propos</h6>
+			                            <p>
+			                                Web Designer, UI/UX Engineer
+			                            </p>
+			                            <h6>Desciption</h6>
+			                            <p>
+			                                {this.state.description}
+			                            </p>
+			                        </div>
+			                        <div class="col-md-6">
+			                            <h6>Compétence</h6>
+			                            <a href="#" class="badge badge-dark badge-pill">html5</a>
+			                            <a href="#" class="badge badge-dark badge-pill">react</a>
+			                            <a href="#" class="badge badge-dark badge-pill">codeply</a>
+			                            <a href="#" class="badge badge-dark badge-pill">angularjs</a>
+			                            <a href="#" class="badge badge-dark badge-pill">css3</a>
+			                            <a href="#" class="badge badge-dark badge-pill">jquery</a>
+			                            <a href="#" class="badge badge-dark badge-pill">bootstrap</a>
+			                            <a href="#" class="badge badge-dark badge-pill">responsive-design</a>
+			                        </div>
+				                        <div class="col-md-12">
+				                            <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Activité récente</h5>
+				                            <table class="table table-sm table-hover table-striped">
+				                                <tbody>                                    
+				                                    <tr>
+				                                        <td>
+				                                            <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
+				                                        </td>
+				                                    </tr>
+				                                </tbody>
+				                            </table>
+				                        </div>
+                    			</div>
+                			</div>
 
-                        <h6 className="card-text">{this.state.role}</h6>
-                        <br/>
-                        <h6>Email</h6>
-                        <p className="card-text">{this.state.email}</p>
-                        <h6>Description</h6>
-                        <p className="card-text">{this.state.description}</p>
-                        <h6>Compétences</h6>
-                        <p className="card-text">{this.state.skill}</p>
-                    </div>
-                </div>
-                {
-                    this.state.role === 'Candidat' ? (
-                        <div>
-                    <h5 className="centrer">Tes candidatures</h5>
-                        </div>) : (<div></div>)
-                }
-                {
-                    this.state.role === 'Candidat' ? (
-                        this.state.register.length > 0 && this.state.role === 'Candidat' ? (
-                            this.state.register.map(item =>
-                                <Card item={item}
-                                />)
-                        ) : (
-                            <div class="card mt-2 col-sm">
-                                <div class="card-body">Inscrit à aucune offre</div>
+                            <div className="tab-pane" id="edit">
+                                <div class="form-group row">
+                                    <form role="form" onSubmit={this.handleSubmit}>
+                                        <div className="form-group row">
+                                            <label className="col-lg-3 col-form-label form-control-label">Prénom</label>
+                                            <div className="col-lg-9">
+                                                <input className="form-control" type="text" value={this.state.familyName} onChange={e => this.setState({familyName: e.target.value})}/>
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="col-lg-3 col-form-label form-control-label">Nom</label>
+                                            <div className="col-lg-9">
+                                                <input className="form-control" type="text" value={this.state.givenName} onChange={e => this.setState({givenName: e.target.value})}/>
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="col-lg-3 col-form-label form-control-label">Mail</label>
+                                            <div className="col-lg-9">
+                                                <input className="form-control" type="text" value={this.state.email} onChange={e => this.setState({email: e.target.value})}/>
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="col-lg-3 col-form-label form-control-label">Description</label>
+                                            <div className="col-lg-9">
+                                                <textarea className="list-card-composer-textarea js-card-title" value={this.state.description} onChange={e => this.setState({description: e.target.value})}/>
+                                            </div>
+                                        </div>
+                                        <label class="col-lg-3 col-form-label form-control-label"></label>
+                                        <div class="col-lg-9">
+                                            <input type="reset" class="btn btn-secondary" value="Cancel"/>
+                                            <input type="button" class="btn btn-primary" value="Save Changes" onClick={this.handleModify}/>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        )
-                    ) : (<div></div>)
-                }
-            </div >
+                        </div>
+                </div>
+                <div className="col-lg-4 order-lg-1 text-center">
+               		 <img src={this.state.image} className="mx-auto img-fluid img-circle d-block" alt="avatar"/>
+                      <h6 className="mt-2">{this.state.email}</h6>
+                </div>
+            </div>
+          </div>
         );
+    }
+
+    handleModify = async (event) => {
+        event.preventDefault();
+        console.log("update");
     }
 }
 
