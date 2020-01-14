@@ -74,4 +74,24 @@ router.get('/candidature', secured(), function (req, res, next) {
     });
 });
 
+router.post('/updateprofil', secured(), function (req, res, next) {
+    console.log(req.body);
+    Profil.update
+    (
+        {
+            auth_id: req.auth_id
+        },
+        {
+            $set :
+            {
+                "familyName": req.familyName,
+                "givenName": req.giveName,
+                "email": req.email,
+                "description": req.description
+            }
+        }
+    );
+    return req.body;
+});
+
 module.exports = router;

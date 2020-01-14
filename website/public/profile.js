@@ -54,6 +54,7 @@ class Profile extends React.Component {
         fetch('/profiles').then(res => {return res.json()})
             .then(data => {
                 console.log(data);
+                this.setState({ auth_id : data['auth_id'] });
                 this.setState({ familyName : data['familyName'] });
                 this.setState({ givenName : data['givenName'] });
                 this.setState({ email : data['email'] });
@@ -187,7 +188,25 @@ class Profile extends React.Component {
 
     handleModify = async (event) => {
         event.preventDefault();
-        console.log("update");
+
+        const body = JSON.stringify({
+            auth_id: this.state.auth_id,
+            giveName: this.state.givenName,
+            familyName: this.state.familyName,
+            description: this.state.description,
+            email: this.state.email,
+        });
+
+        const headers = {
+            'content-type': 'application/json',
+            accept: 'application/json',
+        };
+
+        await fetch('/updateprofil', {
+            method: 'POST',
+            headers,
+            body,
+        });
     }
 }
 
