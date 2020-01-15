@@ -62,7 +62,7 @@ const TagsNoInput = props => {
     console.log(tags);
     console.log(userTags);
     const matches = userTags.filter((tag)=>{return tags.includes(tag)}).length;
-    const percentage = (matches / userTags.length * 100).toFixed(2) + '%';
+    const percentage = (matches / tags.length * 100).toFixed(2) + '%';
 
     return (
         <div>
