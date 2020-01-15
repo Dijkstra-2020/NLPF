@@ -195,13 +195,13 @@ class Profile extends React.Component {
                                 <div class="form-group row">
                                     <form role="form" onSubmit={this.handleSubmit}>
                                         <div className="form-group row">
-                                            <label className="col-lg-3 col-form-label form-control-label">Prénom</label>
+                                            <label className="col-lg-3 col-form-label form-control-label">Nom</label>
                                             <div className="col-lg-9">
                                                 <input name="lastname" className="form-control" type="text" value={this.state.familyName} onChange={e => this.setState({familyName: e.target.value})}/>
                                             </div>
                                         </div>
                                         <div className="form-group row">
-                                            <label className="col-lg-3 col-form-label form-control-label">Nom</label>
+                                            <label className="col-lg-3 col-form-label form-control-label">Prénom</label>
                                             <div className="col-lg-9">
                                                 <input name="firstname" className="form-control" type="text" value={this.state.givenName} onChange={e => this.setState({givenName: e.target.value})}/>
                                             </div>
