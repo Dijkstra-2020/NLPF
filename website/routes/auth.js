@@ -60,16 +60,25 @@ router.get('/callback', function (req, res, next) {
                 }
             });
             const { _raw, _json, ...userProfile } = req.user;
-            var c =  Profil.create({
-                auth_id: userProfile['user_id'],
-                image: userProfile['picture'],
-                familyName: userProfile['name']['familyName'],
-                givenName: userProfile['name']['givenName'],
-                email: userProfile['emails'][0]['value'],
-                description: "Pas encore renseigné",
-                skill: "Pas encore renseigné"
+            Profil.findOne({
+                where: {
+                    auth_id: userProfile['user_id']
+                }
+            }).then(function (user) {
+                console.log(user);
+                if (user == null) {
+                    var c =  Profil.create({
+                        auth_id: userProfile['user_id'],
+                        image: userProfile['picture'],
+                        familyName: userProfile['name']['familyName'],
+                        givenName: userProfile['name']['givenName'],
+                        email: userProfile['emails'][0]['value'],
+                        description: "Pas encore renseigné",
+                        skill: "Pas encore renseigné"
+                    });
+                    console.log(c);
+                }
             });
-            console.log(c);
             res.redirect(returnTo || '/dashboard');
         });
     })(req, res, next);
