@@ -50,7 +50,7 @@ const TagsInput = props => {
             <input
                 type="text"
                 onKeyUp={event => event.key === " " ? addTags(event) : null}
-                placeholder="Press enter to add tags"
+                placeholder="Press space to add tags"
             />
         </div>
     );
