@@ -259,8 +259,9 @@ class Dashboard extends React.Component {
         await fetch('/profiles').then(res => {return res.json()})
             .then(data => {
                 console.log(data);
-                this.setState({ userTags : data['tags'] ? data['tags'].replace(/\s+/g, '').split(',') : []});
-                console.log(this.state.tags);
+                if (data['tags'])
+                    this.setState( { userTags : data['tags'].replace(/\s+/g, '').split(',')});
+                console.log(this.state.userTags);
 
             })
             .catch(error => {
