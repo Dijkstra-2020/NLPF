@@ -9,6 +9,7 @@ const database = new Sequelize({
 
 const Post = database.define('posts', {
     title: Sequelize.STRING,
+    tags: Sequelize.STRING,
     content: Sequelize.TEXT
 });
 
