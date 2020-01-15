@@ -23,24 +23,26 @@ const TagsInput = props => {
     const addTags = event => {
         if (event.target.value !== "") {
             setTags([...tags, event.target.value]);
-            props.selectedTags([...tags, event.target.value]);
             event.target.value = "";
         }
     };
     return (
         <div>
             <ul id="tags">
-                {tags.map((tag, index) => (
+               {
+                    tags.map((tag, index) => (
                     <li key={index} className="tag">
-                        <span className='tag-title'>{tag}</span>
-                        <span className='close'
-                            onClick={() => removeTags(index)}
-                        >
-                            x
-                        </span>
+                    <span className='tag-title'>{tag}</span>
+                    <span className='close'
+                    onClick={() => removeTags(index)}
+                    >
+                    x
+                    </span>
                     </li>
-                ))}
+                    ))
+                }
             </ul>
+            <input name="tags" type="hidden" value={tags}/>
             <input
                 type="text"
                 onKeyUp={event => event.key === " " ? addTags(event) : null}
@@ -51,14 +53,12 @@ const TagsInput = props => {
 };
 
 const TagsNoInput = props => {
-    const [tags] = React.useState(props.tags);
     return (
         <div>
             <ul id="tags">
-                {tags.map((tag, index) => (
+                {props.tags.map((tag, index) => (
                     <li key={index} className="tag">
                         <span className='tag-title'>{tag}</span>
-                       
                     </li>
                 ))}
             </ul>
@@ -82,7 +82,7 @@ const Card = ({ item }) => {
 class Profile extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { familyName : "", givenName : "", email : "", role: "", image: "", register: [], tags: []} ;
+        this.state = { familyName : "", givenName : "", email : "", role: "", image: "", register: [], tags: ""} ;
     }
 
     componentDidMount() {
@@ -105,23 +105,23 @@ class Profile extends React.Component {
         this.setState({ register: res });
     }
 
-    getProfile(){
-        fetch('/profiles').then(res => {return res.json()})
+    getProfile = async () => {
+        await fetch('/profiles').then(res => {return res.json()})
             .then(data => {
                 console.log(data);
-                this.setState({ auth_id : data['auth_id'] });
                 this.setState({ familyName : data['familyName'] });
                 this.setState({ givenName : data['givenName'] });
                 this.setState({ email : data['email'] });
                 this.setState({ image : data['image'] });
                 this.setState({ description : data['description'] });
                 this.setState({ skill : data['skill'] });
-                this.setState({ tags : data['tags'].split(',')});
+                this.setState({ tags : data['tags']});
+                console.log(this.state.tags);
             })
             .catch(error => {
                 console.log(error);
             });
-        fetch('/role').then(res => {return res.json()})
+        await fetch('/role').then(res => {return res.json()})
             .then(data => {
                 console.log(data);
                 this.setState({ role : data[0].name });
@@ -129,7 +129,6 @@ class Profile extends React.Component {
             .catch(error => {
                 console.log(error);
             });
-
     };
 /*
     editprofil = (name, name2) => {
@@ -144,10 +143,6 @@ class Profile extends React.Component {
     };
  */
     render() {
-        const selectedTags = tags => {
-                console.log(tags);
-                this.setState({ tags: tags});
-        };
         return (
             <div>
                 <AppNav />
@@ -177,7 +172,9 @@ class Profile extends React.Component {
 			                        </div>
 			                        <div class="col-md-6">
 			                            <h6>Compétences</h6>
-			                                 <TagsNoInput tags={this.state.tags}/>
+                                        <div className="col-lg-9">
+                                            <TagsNoInput tags={this.state.tags ? this.state.tags.split(',') : []}/>
+                                        </div>
 			                        </div>
 				                        <div class="col-md-12">
 				                            <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Activité récente</h5>
@@ -200,31 +197,30 @@ class Profile extends React.Component {
                                         <div className="form-group row">
                                             <label className="col-lg-3 col-form-label form-control-label">Prénom</label>
                                             <div className="col-lg-9">
-                                                <input className="form-control" type="text" value={this.state.familyName} onChange={e => this.setState({familyName: e.target.value})}/>
+                                                <input name="firstname" className="form-control" type="text" value={this.state.familyName} onChange={e => this.setState({familyName: e.target.value})}/>
                                             </div>
                                         </div>
                                         <div className="form-group row">
                                             <label className="col-lg-3 col-form-label form-control-label">Nom</label>
                                             <div className="col-lg-9">
-                                                <input className="form-control" type="text" value={this.state.givenName} onChange={e => this.setState({givenName: e.target.value})}/>
+                                                <input name="lastname" className="form-control" type="text" value={this.state.givenName} onChange={e => this.setState({givenName: e.target.value})}/>
                                             </div>
                                         </div>
                                         <div className="form-group row">
                                             <label className="col-lg-3 col-form-label form-control-label">Description</label>
                                             <div className="col-lg-9">
-                                                <textarea className="list-card-composer-textarea js-card-title" value={this.state.description} onChange={e => this.setState({description: e.target.value})}/>
+                                                <textarea name="description" className="list-card-composer-textarea js-card-title" value={this.state.description} onChange={e => this.setState({description: e.target.value})}/>
                                             </div>
                                         </div>
                                         <div className="form-group row">
                                             <label className="col-lg-3 col-form-label form-control-label">Compétences</label>
-                                            <div className="col-lg-9">
-                                                <TagsInput selectedTags={selectedTags}  tags={this.state.tags}/>
-                                            </div>    
+                                            <div className="col-lg-12">
+                                                <TagsInput name="tags" tags={this.state.tags ? this.state.tags.split(',') : []}/>
+                                            </div>
                                         </div>
                                         <label class="col-lg-3 col-form-label form-control-label"></label>
                                         <div class="col-lg-9">
-                                            <input type="reset" class="btn btn-secondary" value="Cancel"/>
-                                            <input type="button" class="btn btn-primary" value="Save Changes" onClick={this.handleModify}/>
+                                            <button type="submit" className="btn btn-info btn-sm ml-2">Sauvegarder</button>
                                         </div>
                                     </form>
                                 </div>
@@ -240,20 +236,17 @@ class Profile extends React.Component {
         );
     }
 
-    handleModify = async (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
-
-        var tags = JSON.stringify(this.state.tags);
-        var finaltags = tags.replace(/\[|\]|"/g, "").replace(' ', '');
+        const data = new FormData(event.target);
 
         const body = JSON.stringify({
-            auth_id: this.state.auth_id,
-            givenName: this.state.givenName,
-            familyName: this.state.familyName,
-            description: this.state.description,
-            tags: finaltags,
+            givenName: data.get('firstname'),
+            familyName: data.get('lastname'),
+            tags: data.get('tags'),
+            description: data.get('description')
         });
-        console.log(body);
+
         const headers = {
             'content-type': 'application/json',
             accept: 'application/json',
@@ -264,6 +257,7 @@ class Profile extends React.Component {
             headers,
             body,
         });
+        await this.getProfile();
     }
 }
 
