@@ -102,6 +102,21 @@ small {
     background: #0052cc;
 }
 
+.match {
+    width: auto;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8B0000;
+    padding: 0 8px;
+    font-size: 14px;
+    list-style: none;
+    border-radius: 6px;
+    margin: 0 8px 8px 0;
+    background: #FFA07A;
+}
+
 .tag-title {
     margin-top: 3px;
 }
@@ -116,6 +131,21 @@ small {
         font-size: 14px;
         margin-left: 8px;
         color: #0052cc;
+        border-radius: 50%;
+        background: #fff;
+        cursor: pointer;
+
+}
+
+.matching {
+    display: block;
+        width: auto;
+        height: 16px;
+        line-height: 16px;
+        text-align: center;
+        font-size: 14px;
+        margin-left: 8px;
+        color:  #8B0000;
         border-radius: 50%;
         background: #fff;
         cursor: pointer;

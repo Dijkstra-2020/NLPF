@@ -58,6 +58,12 @@ const TagsInput = props => {
 
 const TagsNoInput = props => {
     const [tags] = React.useState(props.tags);
+    const [userTags] =  React.useState(props.userTags);
+    console.log(tags);
+    console.log(userTags);
+    const matches = userTags.filter((tag)=>{return tags.includes(tag)}).length;
+    const percentage = (matches / tags.length * 100).toFixed(2) + '%';
+
     return (
         <div>
             <ul id="tags">
@@ -67,12 +73,20 @@ const TagsNoInput = props => {
                     </li>
                 ))}
             </ul>
+            <ul id="tags">
+                <li className="match">
+                    <span className='tag-title'>Matching: </span>
+                    <span className='matching'>
+                        { percentage }
+                    </span>
+                </li>
+            </ul>
         </div>
     );
 };
 
 
-const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handleRegister, show, candidat}) => {
+const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handleRegister, show, candidat, userTags}) => {
     const { title, content, editMode} = item;
     const selectedTags = tags => {
             console.log(tags);
@@ -104,7 +118,7 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handl
                 <div class="card-body">
                     <h5 class="card-title">{title || "No Title"}</h5>
                     <p class="card-text">{content || "No Content"}</p>
-                    <TagsNoInput tags={item.tags ? item.tags.split(',') : []}/>
+                    <TagsNoInput tags={item.tags ? item.tags.split(',') : []}  userTags={userTags}/>
                     <button type="button" class="btn btn-outline-danger btn-sm" onClick={handleDelete} style={{display: show}}>Supprimer</button>
                     <button type="submit" class="btn btn-info btn-sm ml-2" onClick={handleEdit} style={{display :show}}>Editer</button>
                     <button type="submit" className="btn btn-info btn-sm ml-2" onClick={handleRegister} style={{display: candidat}}>Postuler</button>
@@ -117,11 +131,13 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handl
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { data: [], show : 'none', candidat: 'none', register: []};
+        this.state = { data: [], show : 'none', candidat: 'none', register: [], userTags: [], userRole: ""};
     }
 
     componentDidMount() {
         this.getPosts();
+        this.getProfile();
+        console.log("tags = " + this.state.userTags);
         fetch('/role').then(res => {return res.json()})
             .then(data => {
                 if (data[0]['name'] === 'Entreprise')
@@ -240,6 +256,28 @@ class Dashboard extends React.Component {
         await this.getPosts();
     }
 
+    getProfile = async () => {
+        await fetch('/profiles').then(res => {return res.json()})
+            .then(data => {
+                console.log(data);
+                if (data['tags'])
+                    this.setState( { userTags : data['tags'].replace(/\s+/g, '').split(',')});
+                console.log(this.state.userTags);
+
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        await fetch('/role').then(res => {return res.json()})
+            .then(data => {
+                console.log(data);
+                this.setState({ userRole : data[0].name });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
+
     render() {
         return (
             <div>
@@ -258,6 +296,7 @@ class Dashboard extends React.Component {
                                   handleRegister={this.handleRegister.bind(this, item.id)}
                                   show={this.state.show}
                                   candidat={this.state.candidat}
+                                  userTags={this.state.userTags}
                             />)
                     ) : (
                         <div class="card mt-5 col-sm">
