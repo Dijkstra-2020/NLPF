@@ -43,7 +43,7 @@ const TagsInput = props => {
             </ul>
             <input
                 type="text"
-                onKeyUp={event => event.key === "Space" ? addTags(event) : null}
+                onKeyUp={event => event.key === " " ? addTags(event) : null}
                 placeholder="Press space to add tags"
             />
         </div>
@@ -51,7 +51,7 @@ const TagsInput = props => {
 };
 
 const TagsNoInput = props => {
-    const [tags, setTags] = React.useState(props.tags);
+    const [tags] = React.useState(props.tags);
     return (
         <div>
             <ul id="tags">
@@ -82,7 +82,7 @@ const Card = ({ item }) => {
 class Profile extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { familyName : "", givenName : "", email : "", role: "", image: "", register: []} ;
+        this.state = { familyName : "", givenName : "", email : "", role: "", image: "", register: [], tags: []} ;
     }
 
     componentDidMount() {
@@ -116,6 +116,7 @@ class Profile extends React.Component {
                 this.setState({ image : data['image'] });
                 this.setState({ description : data['description'] });
                 this.setState({ skill : data['skill'] });
+                this.setState({ tags : data['tags']});
             })
             .catch(error => {
                 console.log(error);
@@ -145,6 +146,7 @@ class Profile extends React.Component {
     render() {
         const selectedTags = tags => {
                 console.log(tags);
+                this.setState({ tags: tags});
         };
         return (
             <div>
@@ -175,7 +177,7 @@ class Profile extends React.Component {
 			                        </div>
 			                        <div class="col-md-6">
 			                            <h6>Compétences</h6>
-			                                 <TagsNoInput tags={['NodeJS', 'MongoDB']}/>
+			                                 <TagsNoInput tags={this.state.tags}/>
 			                        </div>
 				                        <div class="col-md-12">
 				                            <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Activité récente</h5>
@@ -216,7 +218,7 @@ class Profile extends React.Component {
                                         <div className="form-group row">
                                             <label className="col-lg-3 col-form-label form-control-label">Compétences</label>
                                             <div className="col-lg-9">
-                                                <TagsInput selectedTags={selectedTags}  tags={[]}/>
+                                                <TagsInput selectedTags={selectedTags}  tags={this.state.tags}/>
                                             </div>    
                                         </div>
                                         <label class="col-lg-3 col-form-label form-control-label"></label>
@@ -241,11 +243,15 @@ class Profile extends React.Component {
     handleModify = async (event) => {
         event.preventDefault();
 
+        var tags = JSON.stringify(this.state.tags);
+        var finaltags = tags.replace(/\[|\]|"/g, "").replace(' ', '');
+
         const body = JSON.stringify({
             auth_id: this.state.auth_id,
             givenName: this.state.givenName,
             familyName: this.state.familyName,
             description: this.state.description,
+            tags: finaltags,
         });
         console.log(body);
         const headers = {

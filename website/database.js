@@ -31,7 +31,8 @@ const Profil = database.define('profil', {
     givenName: Sequelize.STRING,
     email: Sequelize.STRING,
     description: Sequelize.STRING,
-    skill: Sequelize.STRING
+    skill: Sequelize.STRING,
+    tags: Sequelize.STRING
 });
 
 module.exports = { database, Post, Candidature, Message, Profil };

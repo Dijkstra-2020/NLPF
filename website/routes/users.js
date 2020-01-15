@@ -105,7 +105,8 @@ router.post('/updateprofil', secured(), function (req, res, next) {
             "familyName": req.body.familyName,
             "givenName": req.body.givenName,
             "email": req.body.email,
-            "description": req.body.description
+            "description": req.body.description,
+            "tags": req.body.tags
         },
         {
             where: {auth_id: req.body.auth_id}
