@@ -188,6 +188,26 @@ class Profile extends React.Component {
 				                                </tbody>
 				                            </table>
 				                        </div>
+
+                                    {
+                                        this.state.role === 'Candidat' ? (
+                                            <div>
+                                                <h5 className="centrer">Tes candidatures</h5><br/>
+                                            </div>) : (<div></div>)
+                                    }
+                                    {
+                                        this.state.role === 'Candidat' ? (
+                                            this.state.register.length > 0 && this.state.role === 'Candidat' ? (
+                                                this.state.register.map(item =>
+                                                    <Card item={item}
+                                                    />)
+                                            ) : (
+                                                <div class="card mt-2 col-sm">
+                                                    <div class="card-body">Inscrit à aucune offre</div>
+                                                </div>
+                                            )
+                                        ) : (<div></div>)
+                                    }
                     			</div>
                 			</div>
 
@@ -231,25 +251,6 @@ class Profile extends React.Component {
                		 <img src={this.state.image} className="mx-auto img-fluid img-circle d-block" alt="avatar"/>
                       <h6 className="mt-2">{this.state.email}</h6>
                 </div>
-                    {
-                        this.state.role === 'Candidat' ? (
-                            <div>
-                                <h5 className="centrer">Tes candidatures</h5>
-                            </div>) : (<div></div>)
-                    }
-                    {
-                        this.state.role === 'Candidat' ? (
-                            this.state.register.length > 0 && this.state.role === 'Candidat' ? (
-                                this.state.register.map(item =>
-                                    <Card item={item}
-                                    />)
-                            ) : (
-                                <div class="card mt-2 col-sm">
-                                    <div class="card-body">Inscrit à aucune offre</div>
-                                </div>
-                            )
-                        ) : (<div></div>)
-                    }
             </div>
           </div>
         );
