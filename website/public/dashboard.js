@@ -43,6 +43,11 @@ const TagsInput = props => {
                 ))}
             </ul>
             <input
+                name="tags"
+                type="hidden"
+                value={tags}
+            />
+            <input
                 type="text"
                 onKeyUp={event => event.key === " " ? addTags(event) : null}
                 placeholder="Press space to add tags"
@@ -59,7 +64,6 @@ const TagsNoInput = props => {
                 {tags.map((tag, index) => (
                     <li key={index} className="tag">
                         <span className='tag-title'>{tag}</span>
-                       
                     </li>
                 ))}
             </ul>

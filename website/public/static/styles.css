@@ -80,15 +80,6 @@ small {
     font-family: "Overpass", sans-serif;
 }
 
-body {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Overpass", sans-serif;
-}
-
-
 #tags {
     display: flex;
     flex-wrap: wrap;
@@ -109,9 +100,10 @@ body {
     border-radius: 6px;
     margin: 0 8px 8px 0;
     background: #0052cc;
-    .tag-title {
-        margin-top: 3px;
-    }
+}
+
+.tag-title {
+    margin-top: 3px;
 }
 
 .close {
