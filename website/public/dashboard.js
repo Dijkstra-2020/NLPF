@@ -57,8 +57,9 @@ const TagsInput = props => {
 };
 
 const TagsNoInput = props => {
-    const [tags, userTags] = React.useState(props.tags);
-
+    const [tags] = React.useState(props.tags);
+    const [userTags] =  React.useState(props.userTags);
+    console.log(tags);
     console.log(userTags);
     const matches = userTags.filter((tag)=>{return tags.includes(tag)}).length;
     const percentage = (matches / userTags.length * 100).toFixed(2) + '%';
@@ -117,7 +118,7 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handl
                 <div class="card-body">
                     <h5 class="card-title">{title || "No Title"}</h5>
                     <p class="card-text">{content || "No Content"}</p>
-                    <TagsNoInput tags={item.tags ? item.tags.replace(/\s+/g, '').split(',') : []}  userTags={userTags}/>
+                    <TagsNoInput tags={item.tags ? item.tags.split(',') : []}  userTags={userTags}/>
                     <button type="button" class="btn btn-outline-danger btn-sm" onClick={handleDelete} style={{display: show}}>Supprimer</button>
                     <button type="submit" class="btn btn-info btn-sm ml-2" onClick={handleEdit} style={{display :show}}>Editer</button>
                     <button type="submit" className="btn btn-info btn-sm ml-2" onClick={handleRegister} style={{display: candidat}}>Postuler</button>

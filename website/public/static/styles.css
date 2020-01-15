@@ -139,7 +139,7 @@ small {
 
 .matching {
     display: block;
-        width: 16px;
+        width: auto;
         height: 16px;
         line-height: 16px;
         text-align: center;
