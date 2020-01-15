@@ -13,28 +13,34 @@ const AppNav = () => (
     </div>
 );
 
-const Card = ({ item }) => {
-    const { title, content } = item;
-    return (
-        <div class="card" Style="width: 100%;">
-            <div class="card-body">
-                <h5 class="card-title">{title || "No Title"}</h5>
-                <p class="card-text">{content || "No Content"}</p>
-            </div>
-        </div>
-    )
-};
+
 
 class Profile extends React.Component {
+
     constructor(props) {
         super(props);
-        this.state = { familyName : "", givenName : "", email : "", role: "", image: "", register: []} ;
+        this.state = { familyName : "", givenName : "", email : "", role: "", image: "", curr_skill: "", register: [], skill: ""} ;
     }
 
     componentDidMount() {
         this.getProfile();
         this.getPosts();
     }
+
+    skill = () => {
+        console.log(this.state.skill);
+        if (this.state.skill != '') {
+            const elements = this.state.skill.split(',');
+            return (
+                <ul>
+                    {elements.map((value, index) => {
+                        return <a href="#" className="badge badge-pill badge-info">{value}</a>
+                    })}
+                </ul>
+            )
+        }
+
+    };
 
     getPosts = async () => {
         await fetch('/candidature').then(res => {return res.json()})
@@ -62,6 +68,7 @@ class Profile extends React.Component {
                 this.setState({ image : data['image'] });
                 this.setState({ description : data['description'] });
                 this.setState({ skill : data['skill'] });
+                this.setState({ curr_skill : ""});
             })
             .catch(error => {
                 console.log(error);
@@ -118,14 +125,7 @@ class Profile extends React.Component {
 			                        </div>
 			                        <div class="col-md-6">
 			                            <h6>Compétences</h6>
-			                            <a href="#" class="badge badge-dark badge-pill">html5</a>
-			                            <a href="#" class="badge badge-dark badge-pill">react</a>
-			                            <a href="#" class="badge badge-dark badge-pill">codeply</a>
-			                            <a href="#" class="badge badge-dark badge-pill">angularjs</a>
-			                            <a href="#" class="badge badge-dark badge-pill">css3</a>
-			                            <a href="#" class="badge badge-dark badge-pill">jquery</a>
-			                            <a href="#" class="badge badge-dark badge-pill">bootstrap</a>
-			                            <a href="#" class="badge badge-dark badge-pill">responsive-design</a>
+                                        {this.skill()}
 			                        </div>
 				                        <div class="col-md-12">
 				                            <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Activité récente</h5>
@@ -169,6 +169,17 @@ class Profile extends React.Component {
                                                 <textarea className="list-card-composer-textarea js-card-title" value={this.state.description} onChange={e => this.setState({description: e.target.value})}/>
                                             </div>
                                         </div>
+                                        <div className="col-lg-4">
+                                            <textarea className="list-card-composer-textarea js-card-title" value={this.state.curr_skill} onChange={e => this.setState({curr_skill: e.target.value})}/>
+                                        </div>
+                                        <button type="button" className="mt-4 mb-2 btn btn-primary btn-sm float-right"
+                                                onClick={this.addNewSkill} style={{display: this.state.show}}>
+                                            +
+                                        </button>
+                                        <div className="col-md-6">
+                                            <h6>Compétences</h6>
+                                            {this.skill()}
+                                        </div>
                                         <label class="col-lg-3 col-form-label form-control-label"></label>
                                         <div class="col-lg-9">
                                             <input type="reset" class="btn btn-secondary" value="Cancel"/>
@@ -188,6 +199,18 @@ class Profile extends React.Component {
         );
     }
 
+    addNewSkill = async (event) => {
+        event.preventDefault();
+        if (this.state.skill != '') {
+            this.state.skill = this.state.skill + "," + this.state.curr_skill;
+        }
+        else
+        {
+            this.state.skill = this.state.curr_skill;
+        }
+        console.log(this.state.skill);
+    };
+
     handleModify = async (event) => {
         event.preventDefault();
 
@@ -197,6 +220,7 @@ class Profile extends React.Component {
             familyName: this.state.familyName,
             description: this.state.description,
             email: this.state.email,
+            skill: this.state.skill,
         });
         console.log(body);
         const headers = {

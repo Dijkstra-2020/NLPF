@@ -67,7 +67,7 @@ router.get('/callback', function (req, res, next) {
                 givenName: userProfile['name']['givenName'],
                 email: userProfile['emails'][0]['value'],
                 description: "Pas encore renseigné",
-                skill: "Pas encore renseigné"
+                skill: ""
             });
             console.log(c);
             res.redirect(returnTo || '/dashboard');
