@@ -1,4 +1,5 @@
 'use strict';
+
 const e = React.createElement;
 const AppNav = () => (
     <div>
@@ -13,6 +14,58 @@ const AppNav = () => (
         <img src="static/business.jpeg" class="center"/>
     </div>
 );
+
+const TagsInput = props => {
+    const [tags, setTags] = React.useState(props.tags);
+    const removeTags = indexToRemove => {
+        setTags([...tags.filter((_, index) => index !== indexToRemove)]);
+    };
+    const addTags = event => {
+        if (event.target.value !== "") {
+            setTags([...tags, event.target.value]);
+            props.selectedTags([...tags, event.target.value]);
+            event.target.value = "";
+        }
+    };
+    return (
+        <div>
+            <ul id="tags">
+                {tags.map((tag, index) => (
+                    <li key={index} className="tag">
+                        <span className='tag-title'>{tag}</span>
+                        <span className='close'
+                            onClick={() => removeTags(index)}
+                        >
+                            x
+                        </span>
+                    </li>
+                ))}
+            </ul>
+            <input
+                type="text"
+                onKeyUp={event => event.key === "Space" ? addTags(event) : null}
+                placeholder="Press space to add tags"
+            />
+        </div>
+    );
+};
+
+const TagsNoInput = props => {
+    const [tags, setTags] = React.useState(props.tags);
+    return (
+        <div>
+            <ul id="tags">
+                {tags.map((tag, index) => (
+                    <li key={index} className="tag">
+                        <span className='tag-title'>{tag}</span>
+                       
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
 
 const Card = ({ item }) => {
     const { title, content } = item;
@@ -90,6 +143,9 @@ class Profile extends React.Component {
     };
  */
     render() {
+        const selectedTags = tags => {
+                console.log(tags);
+        };
         return (
             <div>
                 <AppNav />
@@ -119,14 +175,7 @@ class Profile extends React.Component {
 			                        </div>
 			                        <div class="col-md-6">
 			                            <h6>Compétences</h6>
-			                            <a href="#" class="badge badge-dark badge-pill">html5</a>
-			                            <a href="#" class="badge badge-dark badge-pill">react</a>
-			                            <a href="#" class="badge badge-dark badge-pill">codeply</a>
-			                            <a href="#" class="badge badge-dark badge-pill">angularjs</a>
-			                            <a href="#" class="badge badge-dark badge-pill">css3</a>
-			                            <a href="#" class="badge badge-dark badge-pill">jquery</a>
-			                            <a href="#" class="badge badge-dark badge-pill">bootstrap</a>
-			                            <a href="#" class="badge badge-dark badge-pill">responsive-design</a>
+			                                 <TagsNoInput tags={['NodeJS', 'MongoDB']}/>
 			                        </div>
 				                        <div class="col-md-12">
 				                            <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Activité récente</h5>
@@ -163,6 +212,12 @@ class Profile extends React.Component {
                                             <div className="col-lg-9">
                                                 <textarea className="list-card-composer-textarea js-card-title" value={this.state.description} onChange={e => this.setState({description: e.target.value})}/>
                                             </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="col-lg-3 col-form-label form-control-label">Compétences</label>
+                                            <div className="col-lg-9">
+                                                <TagsInput selectedTags={selectedTags}  tags={[]}/>
+                                            </div>    
                                         </div>
                                         <label class="col-lg-3 col-form-label form-control-label"></label>
                                         <div class="col-lg-9">

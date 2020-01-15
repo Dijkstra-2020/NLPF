@@ -1,4 +1,5 @@
 'use strict';
+
 const e = React.createElement;
 
 const AppNav = () => (
@@ -15,9 +16,63 @@ const AppNav = () => (
     </div>
 );
 
+const TagsInput = props => {
+    const [tags, setTags] = React.useState(props.tags);
+    const removeTags = indexToRemove => {
+        setTags([...tags.filter((_, index) => index !== indexToRemove)]);
+    };
+    const addTags = event => {
+        if (event.target.value !== "") {
+            setTags([...tags, event.target.value]);
+            props.selectedTags([...tags, event.target.value]);
+            event.target.value = "";
+        }
+    };
+    return (
+        <div>
+            <ul id="tags">
+                {tags.map((tag, index) => (
+                    <li key={index} className="tag">
+                        <span className='tag-title'>{tag}</span>
+                        <span className='close'
+                            onClick={() => removeTags(index)}
+                        >
+                            x
+                        </span>
+                    </li>
+                ))}
+            </ul>
+            <input
+                type="text"
+                onKeyUp={event => event.key === " " ? addTags(event) : null}
+                placeholder="Press space to add tags"
+            />
+        </div>
+    );
+};
+
+const TagsNoInput = props => {
+    const [tags, setTags] = React.useState(props.tags);
+    return (
+        <div>
+            <ul id="tags">
+                {tags.map((tag, index) => (
+                    <li key={index} className="tag">
+                        <span className='tag-title'>{tag}</span>
+                       
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+
 const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handleRegister, show, candidat}) => {
     const { title, content, editMode } = item;
-
+    const selectedTags = tags => {
+            console.log(tags);
+    };
     if (editMode) {
         return (
             <div class="card mt-4" Style="width: 100%;">
@@ -29,6 +84,9 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handl
                         </div>
                         <div class="input-group input-group-sm mb-3">
                             <textarea name="content" class="form-control" placeholder="Content" defaultValue={content}></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <TagsInput selectedTags={selectedTags}  tags={[]}/>
                         </div>
                         <button type="button" class="btn btn-outline-secondary btn-sm" onClick={handleCancel}>Annuler</button>
                         <button type="submit" class="btn btn-info btn-sm ml-2">Sauvegarder</button>
@@ -42,6 +100,7 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handl
                 <div class="card-body">
                     <h5 class="card-title">{title || "No Title"}</h5>
                     <p class="card-text">{content || "No Content"}</p>
+                    <TagsNoInput tags={['test']}/>
                     <button type="button" class="btn btn-outline-danger btn-sm" onClick={handleDelete} style={{display: show}}>Supprimer</button>
                     <button type="submit" class="btn btn-info btn-sm ml-2" onClick={handleEdit} style={{display :show}}>Editer</button>
                     <button type="submit" className="btn btn-info btn-sm ml-2" onClick={handleRegister} style={{display: candidat}}>Postuler</button>
