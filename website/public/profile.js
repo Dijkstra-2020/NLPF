@@ -45,8 +45,8 @@ const TagsInput = props => {
             <input name="tags" type="hidden" value={tags}/>
             <input
                 type="text"
-                onKeyUp={event => event.key === " " ? addTags(event) : null}
-                placeholder="Press space to add tags"
+                onKeyUp={event => event.keyCode === 13 ? addTags(event) : null}
+                placeholder="Press enter to add tags"
             />
         </div>
     );
@@ -197,13 +197,13 @@ class Profile extends React.Component {
                                         <div className="form-group row">
                                             <label className="col-lg-3 col-form-label form-control-label">Prénom</label>
                                             <div className="col-lg-9">
-                                                <input name="firstname" className="form-control" type="text" value={this.state.familyName} onChange={e => this.setState({familyName: e.target.value})}/>
+                                                <input name="lastname" className="form-control" type="text" value={this.state.familyName} onChange={e => this.setState({familyName: e.target.value})}/>
                                             </div>
                                         </div>
                                         <div className="form-group row">
                                             <label className="col-lg-3 col-form-label form-control-label">Nom</label>
                                             <div className="col-lg-9">
-                                                <input name="lastname" className="form-control" type="text" value={this.state.givenName} onChange={e => this.setState({givenName: e.target.value})}/>
+                                                <input name="firstname" className="form-control" type="text" value={this.state.givenName} onChange={e => this.setState({givenName: e.target.value})}/>
                                             </div>
                                         </div>
                                         <div className="form-group row">

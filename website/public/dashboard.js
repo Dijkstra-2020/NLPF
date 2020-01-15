@@ -49,8 +49,8 @@ const TagsInput = props => {
             />
             <input
                 type="text"
-                onKeyUp={event => event.key === " " ? addTags(event) : null}
-                placeholder="Press space to add tags"
+                onKeyUp={event => event.keyCode === 13 ? addTags(event) : null}
+                placeholder="Press enter to add tags"
             />
         </div>
     );
