@@ -176,18 +176,6 @@ class Profile extends React.Component {
                                             <TagsNoInput tags={this.state.tags ? this.state.tags.split(',') : []}/>
                                         </div>
 			                        </div>
-				                        <div class="col-md-12">
-				                            <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Activité récente</h5>
-				                            <table class="table table-sm table-hover table-striped">
-				                                <tbody>                                    
-				                                    <tr>
-				                                        <td>
-				                                            <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
-				                                        </td>
-				                                    </tr>
-				                                </tbody>
-				                            </table>
-				                        </div>
                     			</div>
                 			</div>
 
