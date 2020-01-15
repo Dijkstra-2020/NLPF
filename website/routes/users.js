@@ -99,6 +99,8 @@ router.get('/candidature', secured(), function (req, res, next) {
 
 router.post('/updateprofil', secured(), function (req, res, next) {
     console.log(req.body);
+    const { _raw, _json, ...userProfile } = req.user;
+    var id = userProfile['user_id'];
     Profil.update
     (
         {
@@ -109,7 +111,7 @@ router.post('/updateprofil', secured(), function (req, res, next) {
             "tags": req.body.tags
         },
         {
-            where: {auth_id: req.body.auth_id}
+            where: {auth_id: id}
         },
 
     ).then((result) => {
