@@ -169,21 +169,27 @@ class Profile extends React.Component {
                                                 <textarea className="list-card-composer-textarea js-card-title" value={this.state.description} onChange={e => this.setState({description: e.target.value})}/>
                                             </div>
                                         </div>
-                                        <div className="col-lg-4">
-                                            <textarea className="list-card-composer-textarea js-card-title" value={this.state.curr_skill} onChange={e => this.setState({curr_skill: e.target.value})}/>
+                                        <div className="form-group row">
+                                            <label className="col-lg-3 col-form-label form-control-label">Compétences</label>
+                                            <div className="col-lg-9">
+                                                <input className="form-control" type="text" value={this.state.curr_skill} onChange={e => this.setState({curr_skill: e.target.value})}/>
+                                            </div>
+                                            <button type="button" className="mt-4 mb-2 btn btn-primary btn-sm float-right"
+                                                    onClick={this.addNewSkill} style={{display: this.state.show}}>
+                                                +
+                                            </button>
+                                            <button type="button" className="mt-4 mb-2 btn btn-danger btn-sm float-right"
+                                                    onClick={this.addNewSkill} style={{display: this.state.show}}>
+                                                -
+                                            </button>
                                         </div>
-                                        <button type="button" className="mt-4 mb-2 btn btn-primary btn-sm float-right"
-                                                onClick={this.addNewSkill} style={{display: this.state.show}}>
-                                            +
-                                        </button>
                                         <div className="col-md-6">
-                                            <h6>Compétences</h6>
                                             {this.skill()}
                                         </div>
                                         <label class="col-lg-3 col-form-label form-control-label"></label>
                                         <div class="col-lg-9">
-                                            <input type="reset" class="btn btn-secondary" value="Cancel"/>
-                                            <input type="button" class="btn btn-primary" value="Save Changes" onClick={this.handleModify}/>
+                                            <input type="reset" class="btn btn-danger" value="Cancel"/>
+                                            <input type="button" class="btn btn-info" value="Save Changes" onClick={this.handleModify}/>
                                         </div>
                                     </form>
                                 </div>
