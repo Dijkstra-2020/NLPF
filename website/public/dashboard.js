@@ -86,7 +86,7 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handl
                             <textarea name="content" class="form-control" placeholder="Content" defaultValue={content}></textarea>
                         </div>
                         <div class="input-group input-group-sm mb-3">
-                            <TagsInput name="tags" selectedTags={selectedTags}  tags={item.tags}/>
+                            <TagsInput name="tags" selectedTags={selectedTags}  tags={item.tags ? item.tags.split(',') : []}/>
                         </div>
                         <button type="button" class="btn btn-outline-secondary btn-sm" onClick={handleCancel}>Annuler</button>
                         <button type="submit" class="btn btn-info btn-sm ml-2">Sauvegarder</button>
@@ -100,7 +100,7 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handl
                 <div class="card-body">
                     <h5 class="card-title">{title || "No Title"}</h5>
                     <p class="card-text">{content || "No Content"}</p>
-                    <TagsNoInput tags={['test']}/>
+                    <TagsNoInput tags={item.tags ? item.tags.split(',') : []}/>
                     <button type="button" class="btn btn-outline-danger btn-sm" onClick={handleDelete} style={{display: show}}>Supprimer</button>
                     <button type="submit" class="btn btn-info btn-sm ml-2" onClick={handleEdit} style={{display :show}}>Editer</button>
                     <button type="submit" className="btn btn-info btn-sm ml-2" onClick={handleRegister} style={{display: candidat}}>Postuler</button>
@@ -155,7 +155,8 @@ class Dashboard extends React.Component {
         data.unshift({
             editMode: true,
             title: "",
-            content: ""
+            content: "",
+            tags: ""
         })
         this.setState({ data })
     }
@@ -200,15 +201,18 @@ class Dashboard extends React.Component {
             body,
         });
         await this.getPosts();
-    };
+    }
 
     handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
 
+        console.log(data.get('tags'));
+
         const body = JSON.stringify({
             title: data.get('title'),
             content: data.get('content'),
+            tags: data.get('tags'),
         });
 
         const headers = {

@@ -116,7 +116,7 @@ class Profile extends React.Component {
                 this.setState({ image : data['image'] });
                 this.setState({ description : data['description'] });
                 this.setState({ skill : data['skill'] });
-                this.setState({ tags : data['tags']});
+                this.setState({ tags : data['tags'].split(',')});
             })
             .catch(error => {
                 console.log(error);
