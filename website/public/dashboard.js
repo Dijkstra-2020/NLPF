@@ -209,14 +209,14 @@ class Dashboard extends React.Component {
 
     handleSubmit = async (event) => {
         event.preventDefault();
-        const data = new FormData(event.target);
-
-        console.log(data.get('tags'));
+        var data = new FormData(event.target);
+        var tags = data.get('tags').replace(' ', '');
+        console.log(tags);
 
         const body = JSON.stringify({
             title: data.get('title'),
             content: data.get('content'),
-            tags: data.get('tags'),
+            tags: tags,
         });
 
         const headers = {
