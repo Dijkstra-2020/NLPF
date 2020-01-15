@@ -52,7 +52,7 @@ const TagsInput = props => {
 };
 
 const TagsNoInput = props => {
-    const [tags, setTags] = React.useState(props.tags);
+    const [tags] = React.useState(props.tags);
     return (
         <div>
             <ul id="tags">
@@ -69,7 +69,7 @@ const TagsNoInput = props => {
 
 
 const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handleRegister, show, candidat}) => {
-    const { title, content, editMode } = item;
+    const { title, content, editMode} = item;
     const selectedTags = tags => {
             console.log(tags);
     };
@@ -86,7 +86,7 @@ const Card = ({ item, handleSubmit, handleEdit, handleDelete, handleCancel,handl
                             <textarea name="content" class="form-control" placeholder="Content" defaultValue={content}></textarea>
                         </div>
                         <div class="input-group input-group-sm mb-3">
-                            <TagsInput selectedTags={selectedTags}  tags={[]}/>
+                            <TagsInput name="tags" selectedTags={selectedTags}  tags={item.tags}/>
                         </div>
                         <button type="button" class="btn btn-outline-secondary btn-sm" onClick={handleCancel}>Annuler</button>
                         <button type="submit" class="btn btn-info btn-sm ml-2">Sauvegarder</button>
